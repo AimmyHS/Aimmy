@@ -8,6 +8,7 @@ using InputLogic;
 using Microsoft.Win32;
 using MouseMovementLibraries.ddxoftSupport;
 using MouseMovementLibraries.RazerSupport;
+using MouseMovementLibraries.HostShieldSupport;
 using Other;
 using System.Diagnostics;
 using System.IO;
@@ -45,6 +46,8 @@ namespace Aimmy2
         #endregion Main Variables
 
         #region Loading Window
+
+        public bool ArduinoLoaded = false;
 
         public MainWindow()
         {
@@ -109,6 +112,12 @@ namespace Aimmy2
 
             ListenForKeybinds();
             LoadMenuMinimizers();
+
+            if (!ArduinoLoaded)
+            {
+                ArduinoHostShield.StartArduinoMouse();
+                ArduinoLoaded = true;
+            }
         }
 
         private async void LoadStoreMenuAsync()
@@ -255,10 +264,11 @@ namespace Aimmy2
             // Mouse Movement Method Dropdown
             uiManager.D_MouseMovementMethod!.DropdownBox.SelectedIndex = Dictionary.dropdownState["Mouse Movement Method"] switch
             {
-                "SendInput" => 1,
-                "LG HUB" => 2,
-                "Razer Synapse (Require Razer Peripheral)" => 3,
-                "ddxoft Virtual Input Driver" => 4,
+                "Arduino + USB Host Shield" => 1,
+                "SendInput" => 2,
+                "LG HUB" => 3,
+                "Razer Synapse (Require Razer Peripheral)" => 4,
+                "ddxoft Virtual Input Driver" => 5,
                 _ => 0 // Default case if none of the above matches
             };
         }
@@ -784,6 +794,7 @@ namespace Aimmy2
             uiManager.T_AutoLabelData = AddToggle(SettingsConfig, "Auto Label Data");
             uiManager.D_MouseMovementMethod = AddDropdown(SettingsConfig, "Mouse Movement Method");
             AddDropdownItem(uiManager.D_MouseMovementMethod, "Mouse Event");
+            uiManager.DDI_Arduino = AddDropdownItem(uiManager.D_MouseMovementMethod, "Arduino + USB Host Shield");
             AddDropdownItem(uiManager.D_MouseMovementMethod, "SendInput");
             uiManager.DDI_LGHUB = AddDropdownItem(uiManager.D_MouseMovementMethod, "LG HUB");
 

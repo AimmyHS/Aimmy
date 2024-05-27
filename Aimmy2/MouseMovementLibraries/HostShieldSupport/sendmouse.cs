@@ -7,7 +7,10 @@ namespace MouseMovementLibraries.HostShieldSupport
 {
     public class ArduinoHostShield
     {
-        public ArduinoHostShield() {
+        public ArduinoHostShield() { }
+
+        public void StartArduinoMouse()
+        {
             string[] ports = System.IO.Ports.SerialPort.GetPortNames();
             serialPort.PortName = ports[0];
             serialPortName = ports[0];
