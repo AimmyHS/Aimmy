@@ -4,6 +4,7 @@ using Class;
 using MouseMovementLibraries.ddxoftSupport;
 using MouseMovementLibraries.RazerSupport;
 using MouseMovementLibraries.SendInputSupport;
+using MouseMovementLibraries.HostShieldSupport;
 using System.Drawing;
 using System.Runtime.InteropServices;
 
@@ -93,6 +94,11 @@ namespace InputLogic
                     mouseUpAction = () => DdxoftMain.ddxoftInstance.btn(2);
                     break;
 
+                case "Arduino + USB Host Shield":
+                    mouseDownAction = () => arduinoController.SendMouseClick(1);
+                    mouseUpAction = () => arduinoController.SendMouseClick(0);
+                    break;
+
                 default:
                     mouseDownAction = () => mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
                     mouseUpAction = () => mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
@@ -134,6 +140,10 @@ namespace InputLogic
 
                 case "ddxoft Virtual Input Driver":
                     DdxoftMain.ddxoftInstance.movR!(xRecoil, yRecoil);
+                    break;
+
+                case "Arduino + USB Host Shield":
+                    arduinoController.SendMouseCoordinates(xRecoil, yRecoil);
                     break;
 
                 default:
@@ -188,6 +198,10 @@ namespace InputLogic
 
                 case "ddxoft Virtual Input Driver":
                     DdxoftMain.ddxoftInstance.movR!(newPosition.X, newPosition.Y);
+                    break;
+
+                case "Arduino + USB Host Shield":
+                    arduinoController.SendMouseCoordinates(newPosition.X, newPosition.Y);
                     break;
 
                 default:
