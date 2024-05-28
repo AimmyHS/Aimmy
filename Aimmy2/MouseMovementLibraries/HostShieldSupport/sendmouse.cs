@@ -9,23 +9,27 @@ namespace MouseMovementLibraries.HostShieldSupport
     {
         public ArduinoHostShield() { }
 
+        private SerialPort serialPort = new SerialPort();
+        private bool Open = false;
+
         public void StartArduinoMouse()
         {
             string[] ports = System.IO.Ports.SerialPort.GetPortNames();
             serialPort.PortName = ports[0];
-            serialPortName = ports[0];
             serialPort.BaudRate = 115200;
             serialPort.DataBits = 8;
             serialPort.StopBits = StopBits.One;
             serialPort.Parity = Parity.None;
             serialPort.Open();
+            Open = true;
         }
 
         public void SendMouseCoordinates(int x, int y)
         {
+            if (!Open) StartArduinoMouse();
             if (x != 0 || y != 0)
             {
-                string message = $"m{x},{y}";
+                string message = $"m{x},{y}\n";
                 byte[] encodedBytes = Encoding.UTF8.GetBytes(message);
                 serialPort.Write(Encoding.UTF8.GetString(encodedBytes));
             }
@@ -33,13 +37,15 @@ namespace MouseMovementLibraries.HostShieldSupport
 
         public void SendMouseClick(int press)
         {
+            if (!Open) StartArduinoMouse();
+            string message = "r\n";
             if(press == 1)
             {
-                string message = "p";
+                message = "p\n";
             }
-            else if(press == 0)
+            else
             {
-                string message = "r";
+                message = "r\n";
             }
             byte[] encodedBytes = Encoding.UTF8.GetBytes(message);
             serialPort.Write(Encoding.UTF8.GetString(encodedBytes));

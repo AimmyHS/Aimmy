@@ -112,12 +112,6 @@ namespace Aimmy2
 
             ListenForKeybinds();
             LoadMenuMinimizers();
-
-            if (!ArduinoLoaded)
-            {
-                ArduinoHostShield.StartArduinoMouse();
-                ArduinoLoaded = true;
-            }
         }
 
         private async void LoadStoreMenuAsync()
@@ -794,7 +788,8 @@ namespace Aimmy2
             uiManager.T_AutoLabelData = AddToggle(SettingsConfig, "Auto Label Data");
             uiManager.D_MouseMovementMethod = AddDropdown(SettingsConfig, "Mouse Movement Method");
             AddDropdownItem(uiManager.D_MouseMovementMethod, "Mouse Event");
-            uiManager.DDI_Arduino = AddDropdownItem(uiManager.D_MouseMovementMethod, "Arduino + USB Host Shield");
+            //uiManager.DDI_Arduino = AddDropdownItem(uiManager.D_MouseMovementMethod, "Arduino + USB Host Shield");
+            AddDropdownItem(uiManager.D_MouseMovementMethod, "Arduino + USB Host Shield");
             AddDropdownItem(uiManager.D_MouseMovementMethod, "SendInput");
             uiManager.DDI_LGHUB = AddDropdownItem(uiManager.D_MouseMovementMethod, "LG HUB");
 
